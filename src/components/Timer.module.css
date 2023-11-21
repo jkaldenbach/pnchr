@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+}
+
+.title {
+  text-align: center;
+  color: var(--color-red);
+}
+
+.intervalList {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 3px;
+  height: 10px;
+}
+
+.intervalListItem {
+  flex: 1;
+  background-color: var(--color-background-alt);
+}
+
+.intervalListActive {
+  background-color: var(--color-blue);
+}
+
+.intervalListComplete {
+  background-color: var(--color-red);
+}

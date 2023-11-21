@@ -1,0 +1,51 @@
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.content {
+  --size: 9rem;
+  font-size: 3rem;
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--size);
+  font-weight: bold;
+}
+
+.container svg {
+  position: absolute;
+  width: 100%;
+  top: 25%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: rotate(-90deg);
+}
+
+.blue {
+  stroke: var(--color-blue) !important;
+}
+
+.red {
+  stroke: var(--color-red) !important;
+}
+
+.ring {
+  stroke: var(--color-dark-green);
+  stroke-dasharray: 440;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.innerRing {
+  stroke: var(--color-dark-green);
+  stroke-dasharray: 377;
+  transition: stroke-dashoffset 1s linear;
+}

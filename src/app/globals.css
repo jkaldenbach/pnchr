@@ -1,9 +1,9 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -38,9 +38,45 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  --border-radius-small: 3px;
+  --border-radius-large: 10rem;
+
+  --color-red: #e00022;
+  --color-blue: #3066be;
+  --color-light-green: #c6dcbc;
+  --color-white-green: #f0f7ee;
+  --color-white: #fff;
+  --color-dark-green: #101e0b;
+  --color-black: #000;
+
+  --color-green: #26f77d;
+  --color-orange: #d5573b;
+  --color-mauve: #715b64;
+  --color-purple: #69385c;
+  --color-dark-purple: #361d2e;
+  --color-brown: #674c47;
+
+  --color-primary: var(--color-red);
+
+  --color-background: var(--color-dark-green);
+  --color-background-alt: var(--color-black);
+  --color-foreground: var(--color-white);
+  --color-foreground-alt: var(--color-light-green);
+  --color-foreground-disabled: var(--color-mauve);
+  --color-border: var(--color-black);
+
+  --color-button-background: var(--color-mauve);
+  --button-border-radius: var(--border-radius-large);
+
+  --color-input-background: var(--color-brown);
+  --input-border-radius: var(--border-radius-small);
+
+  --color-card-background: var(--color-dark-purple);
+  --card-border-radius: var(--border-radius-small);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
@@ -79,6 +115,11 @@
   margin: 0;
 }
 
+html {
+  display: flex;
+  justify-content: center;
+}
+
 html,
 body {
   max-width: 100vw;
@@ -86,22 +127,48 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+  flex: 1 0 100%;
+  max-width: 650px;
+  min-height: 100vh;
+  padding: 1rem 2rem;
+  color: var(--color-foreground);
+  background: var(--color-background);
 }
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /* color: var(--color-blue); */
+}
+
+button {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: var(--button-border-radius);
+  border: 0;
+  background: var(--color-button-background);
+  /* border: 1px solid var(--color-border); */
+}
+
+input {
+  border: 0;
+  padding: 0.5rem 1rem;
+  border-radius: var(--input-border-radius);
+  background: var(--color-input-background);
+  border: 1px solid var(--color-border);
+}
+
+.card {
+  background: var(--color-card-background);
+  border-radius: var(--card-border-radius);
+  border: 2px solid var(--color-border);
 }
