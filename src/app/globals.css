@@ -68,7 +68,7 @@
   --color-foreground-disabled: var(--color-mauve);
   --color-border: var(--color-black);
 
-  --color-button-background: var(--color-mauve);
+  --color-button-background: var(--color-background-alt);
   --button-border-radius: var(--border-radius-large);
 
   --color-input-background: var(--color-brown);

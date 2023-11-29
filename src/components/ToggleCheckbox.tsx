@@ -3,7 +3,7 @@ import { BsToggleOff, BsToggleOn } from "react-icons/bs";
 
 import styles from "./ToggleCheckbox.module.css";
 
-export default function ToggleCheckbox(props: {
+export function ToggleCheckbox(props: {
   checked: boolean;
   label: React.ReactNode;
   name: string;

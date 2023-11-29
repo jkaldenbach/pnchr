@@ -2,8 +2,9 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import Header from "@/components/Header";
+import { Header } from "@/components/Header";
 import { MultiTimer, TimerConfig } from "@/components/Timer";
+import { TimerConfigForm } from "@/components/TimerConfigForm";
 
 import commonStyles from "../pageCommon.module.css";
 import styles from "./page.module.css";
@@ -20,28 +21,9 @@ export default function TimerPage(): JSX.Element {
     countDown: 3,
   });
 
-  function handleChange(name: string) {
-    return function (e: React.ChangeEvent<HTMLInputElement>) {
-      setConfig((c: TimerConfig) => ({ ...c, [name]: Number(e.target.value) }));
-    };
-  }
-
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setDisplayState("active");
-  }
-
-  function getTotalDuration(): string {
-    const totalSeconds =
-      config.workInterval * config.numberOfSets +
-      config.recoveryInterval * (config.numberOfSets - 1);
-    const totalMinutes = (totalSeconds / 60).toString();
-    const [minuteStr, secondStr] = totalMinutes.split(".");
-
-    if (!secondStr) return `${minuteStr} Minutes`;
-
-    const remainderSeconds = Math.round(Number(`0.${secondStr}`) * 60);
-    return `${minuteStr} Min ${remainderSeconds} Sec`;
   }
 
   return (
@@ -49,58 +31,17 @@ export default function TimerPage(): JSX.Element {
       <Header>Timer</Header>
       {displayState === "configuring" && (
         <form className={styles.configForm} onSubmit={handleSubmit}>
-          <div className={styles.field}>
-            <label htmlFor="workInterval">Work Interval (seconds)</label>
-            <input
-              type="number"
-              name="workInterval"
-              onChange={handleChange("workInterval")}
-              value={config.workInterval}
-            />
-          </div>
-          <div className={styles.field}>
-            <label htmlFor="recoveryInterval">
-              Recovery Interval (seconds)
-            </label>
-            <input
-              type="number"
-              name="recoveryInterval"
-              onChange={handleChange("recoveryInterval")}
-              value={config.recoveryInterval}
-            />
-          </div>
-          <div className={styles.field}>
-            <label htmlFor="numberOfSets">Number of Sets</label>
-            <input
-              type="number"
-              name="numberOfSets"
-              onChange={handleChange("numberOfSets")}
-              value={config.numberOfSets}
-            />
-          </div>
-          <div className={styles.field}>
-            <label>Total Time</label>
-            <div>{getTotalDuration()}</div>
-          </div>
+          <TimerConfigForm value={config} onChange={setConfig} />
           <button className={commonStyles.cta} type="submit">
             Start
           </button>
         </form>
       )}
       {displayState === "active" && (
-        <>
-          <MultiTimer
-            config={config}
-            onComplete={() => setDisplayState("complete")}
-          />
-          <button
-            className={commonStyles.cancel}
-            onClick={() => setDisplayState("configuring")}
-            title="Cancel timer"
-          >
-            X
-          </button>
-        </>
+        <MultiTimer
+          config={config}
+          onComplete={() => setDisplayState("complete")}
+        />
       )}
       {displayState === "complete" && (
         <div className={commonStyles.content}>

@@ -1,7 +1,12 @@
-.configForm {
+.container {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
 }

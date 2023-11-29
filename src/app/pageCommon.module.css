@@ -19,16 +19,18 @@
   background-color: var(--color-primary);
 }
 
-.cancel {
-  --size: 2.5rem;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.5rem;
-  height: var(--size);
-  width: var(--size);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
+.buttonLink {
+  font-family: var(--font-button);
+  font-size: var(--font-size-button);
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  border-radius: var(--border-radius-small);
+  background: var(--color-background-alt);
+  color: var(--color-foreground);
+  padding: 1rem;
+}
+
+.buttonLink:hover {
+  background: var(--color-button-background);
 }

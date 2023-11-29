@@ -3,7 +3,7 @@ import { GiCheckMark, GiSquare } from "react-icons/gi";
 
 import styles from "./ContainedCheckbox.module.css";
 
-export default function ContainedCheckbox(props: {
+export function ContainedCheckbox(props: {
   checked: boolean;
   label: React.ReactNode;
   name: string;

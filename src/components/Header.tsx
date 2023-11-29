@@ -5,9 +5,7 @@ import { GiBoxingGlove } from "react-icons/gi";
 
 import styles from "./Header.module.css";
 
-export default function Header(
-  props: React.ComponentProps<"div">
-): JSX.Element {
+export function Header(props: React.ComponentProps<"div">): JSX.Element {
   const { className, children, ...rest } = props;
   return (
     <div className={classnames(styles.container, className)} {...rest}>

@@ -152,12 +152,19 @@ export function useTimer(config: TimerConfig): {
 }
 
 export function MultiTimer(props: {
+  children?: React.ReactNode;
   config: TimerConfig;
   onComplete: () => void;
+  onIntervalChange?(activeInterval: Interval): void;
 }): JSX.Element {
   const { activeInterval, incActiveInterval, intervals } = useTimer(
     props.config
   );
+
+  React.useEffect(() => {
+    if (props.onIntervalChange)
+      props.onIntervalChange(intervals[activeInterval]);
+  }, [activeInterval]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleComplete() {
     if (activeInterval === intervals.length - 1) {
@@ -173,6 +180,7 @@ export function MultiTimer(props: {
         {intervals[activeInterval]?.name ||
           startCase(intervals[activeInterval]?.kind)}
       </h2>
+      {props.children && <div className={styles.content}>{props.children}</div>}
       <Timer
         key={activeInterval}
         duration={intervals[activeInterval]?.duration}
