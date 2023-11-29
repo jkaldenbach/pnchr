@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+}
+
+.input {
+  display: none;
+}
+
+.container .icon {
+  font-size: 2rem;
+}
+
+.input:checked + .container .icon {
+  color: var(--color-blue);
+}

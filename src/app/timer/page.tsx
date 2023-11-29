@@ -2,8 +2,10 @@
 import * as React from "react";
 import classnames from "classnames";
 
+import Header from "@/components/Header";
 import { MultiTimer, TimerConfig } from "@/components/Timer";
 
+import commonStyles from "../pageCommon.module.css";
 import styles from "./page.module.css";
 
 type DisplayState = "configuring" | "active" | "complete";
@@ -43,8 +45,8 @@ export default function TimerPage(): JSX.Element {
   }
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.header}>Timer</h1>
+    <div className={commonStyles.container}>
+      <Header>Timer</Header>
       {displayState === "configuring" && (
         <form className={styles.configForm} onSubmit={handleSubmit}>
           <div className={styles.field}>
@@ -80,7 +82,7 @@ export default function TimerPage(): JSX.Element {
             <label>Total Time</label>
             <div>{getTotalDuration()}</div>
           </div>
-          <button className={styles.cta} type="submit">
+          <button className={commonStyles.cta} type="submit">
             Start
           </button>
         </form>
@@ -92,7 +94,7 @@ export default function TimerPage(): JSX.Element {
             onComplete={() => setDisplayState("complete")}
           />
           <button
-            className={styles.cancelTimer}
+            className={commonStyles.cancel}
             onClick={() => setDisplayState("configuring")}
             title="Cancel timer"
           >
@@ -101,7 +103,7 @@ export default function TimerPage(): JSX.Element {
         </>
       )}
       {displayState === "complete" && (
-        <div className={styles.content}>
+        <div className={commonStyles.content}>
           <h2>Finished</h2>
           <p>
             <button onClick={() => setDisplayState("configuring")}>
