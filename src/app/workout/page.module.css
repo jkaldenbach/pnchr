@@ -28,3 +28,7 @@
   align-items: stretch;
   gap: 1rem;
 }
+
+.completeContainer > img {
+  margin-bottom: calc(-1 * var(--body-padding-y));
+}

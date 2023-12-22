@@ -19,7 +19,7 @@ type DisplayState = "config-workouts" | "config-timer" | "active" | "complete";
 
 export default function WorkoutPage(): JSX.Element {
   const [displayState, setDisplayState] =
-    React.useState<DisplayState>("complete");
+    React.useState<DisplayState>("config-workouts");
   const [workoutConfig, setWorkoutConfig] = React.useState<WorkoutConfig>({
     padWork: true,
     combos: true,

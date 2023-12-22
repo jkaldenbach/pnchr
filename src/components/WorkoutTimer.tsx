@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { Interval, MultiTimer, TimerConfig } from "./Timer";
+import { padWorkCallout } from "@/lib/workout";
 
 export type WorkoutConfig = {
   padWork: boolean;
@@ -17,34 +18,62 @@ const SEQUENCE: (keyof WorkoutConfig)[] = [
   "pushups",
 ];
 
+const NAME_MAP: Partial<Record<keyof WorkoutConfig, string>> = {
+  padWork: "Pad Work",
+  combos: "Combos",
+  situps: "Sit-Ups",
+  pushups: "Push-Ups",
+};
+
 function useWorkIntervals(workoutConfig: WorkoutConfig): {
   message?: string;
-  setInterval(interval: Interval): void;
+  setWorkoutInterval(interval: Interval): void;
 } {
   const [activeWorkInterval, setActiveInterval] = React.useState(0);
-  const [interval, setInterval] = React.useState<Interval>();
+  const [interval, setWorkoutInterval] = React.useState<Interval>();
   const [message, setMessage] = React.useState<string>();
 
   React.useEffect(() => {
+    let calloutInterval: NodeJS.Timeout;
     if (interval?.kind === "work") {
-      setMessage("1 - 1 - 2");
-    } else if (interval?.kind === "recovery") {
       switch (interval?.name) {
-        case "punches":
-          setMessage("Easy 1's and 2's");
+        case "situps":
+        case "pushups":
+          setMessage(NAME_MAP[interval?.name]);
+          setTimeout(() => {
+            setMessage("Keep pushing!");
+          }, ((interval?.duration ?? 0) * 1000) / 2);
           break;
-        case "slips":
-          setMessage("Slip left; slip right");
-          break;
+        case "padWork":
+          setMessage(NAME_MAP[interval?.name]);
+          calloutInterval = setInterval(() => {
+            setMessage(padWorkCallout());
+          }, 2000);
         default:
-          setMessage(undefined);
+          setMessage("1 - 1 - 2");
       }
+    } else if (interval?.kind === "recovery") {
+      setMessage("RECOVERY");
+      setTimeout(() => {
+        switch (interval?.name) {
+          case "punches":
+            setMessage("Easy 1's and 2's");
+            break;
+          case "slips":
+            setMessage("Slip left; slip right");
+            break;
+        }
+      }, 1000);
     }
+
+    return () => clearInterval(calloutInterval);
   }, [interval]);
 
   React.useEffect(() => {
     if (message) {
-      const utterance = new SpeechSynthesisUtterance(message);
+      const utterance = new SpeechSynthesisUtterance(
+        message.replaceAll(" - ", " ")
+      );
       utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);
     }
@@ -52,7 +81,7 @@ function useWorkIntervals(workoutConfig: WorkoutConfig): {
 
   return {
     message,
-    setInterval,
+    setWorkoutInterval,
   };
 }
 
@@ -61,8 +90,7 @@ export function WorkoutTimer(props: {
   workoutConfig: WorkoutConfig;
   onComplete(): void;
 }): JSX.Element {
-  const { message, setInterval } = useWorkIntervals(props.workoutConfig);
-  console.log("message?", message);
+  const { message, setWorkoutInterval } = useWorkIntervals(props.workoutConfig);
 
   const timerConfig = React.useMemo(
     () => ({
@@ -81,7 +109,7 @@ export function WorkoutTimer(props: {
     <MultiTimer
       config={timerConfig}
       onComplete={props.onComplete}
-      onIntervalChange={setInterval}
+      onIntervalChange={setWorkoutInterval}
     >
       {message}
     </MultiTimer>

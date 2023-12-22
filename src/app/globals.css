@@ -81,6 +81,9 @@
   --font-button: "Cutive Mono", monospace;
   --font-size-button: 1.25rem;
   --font-body: "Montserrat", sans-serif;
+
+  --body-padding-y: 1rem;
+  --body-padding-x: 2rem;
 }
 
 @media (prefers-color-scheme: light) {
@@ -137,7 +140,7 @@ body {
   flex: 1 0 100%;
   max-width: 650px;
   min-height: 100vh;
-  padding: 1rem 2rem;
+  padding: var(--body-padding-y) var(--body-padding-x);
   color: var(--color-foreground);
   background: var(--color-background);
   font-family: var(--font-body);
