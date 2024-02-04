@@ -8,7 +8,8 @@ import { Ring, RingProps } from "@/components/Ring";
 import styles from "./Timer.module.css";
 
 export type TimerConfig = {
-  workInterval: number;
+  punchInterval: number;
+  repInterval: number;
   recoveryInterval: number;
   numberOfSets: number;
   countDown: number;
@@ -20,6 +21,7 @@ export type Interval = {
   kind: "work" | "recovery";
   duration: number;
   name?: string;
+  nextName?: string;
 };
 
 function useSingleTimer(
@@ -109,6 +111,8 @@ function Timer(props: {
   return <Ring {...ringProps}>{secondsRemaining}</Ring>;
 }
 
+const repNames = ["pushups", "situps", "squats"];
+
 export function useTimer(config: TimerConfig): {
   activeInterval: number;
   incActiveInterval(): void;
@@ -117,25 +121,29 @@ export function useTimer(config: TimerConfig): {
   const [activeInterval, setActiveInterval] = React.useState(0);
   const _intervals: Interval[] = [
     ...new Array(config.numberOfSets * 2 - 1),
-  ].map((_, i) =>
-    i % 2 === 0
-      ? {
-          kind: "work",
-          duration: config.workInterval,
-          name: config.workSequence
-            ? config.workSequence[(i / 2) % config.workSequence.length]
-            : undefined,
-        }
-      : {
-          kind: "recovery",
-          duration: config.recoveryInterval,
-          name: config.recoverySequence
-            ? config.recoverySequence[
-                ((i - 1) / 2) % config.recoverySequence.length
-              ]
-            : undefined,
-        }
-  );
+  ].map((_, i) => {
+    if (i % 2 === 0) {
+      const intervalName = config.workSequence
+        ? config.workSequence[(i / 2) % config.workSequence.length]
+        : undefined;
+      const isReps = !!intervalName && repNames.includes(intervalName);
+      return {
+        kind: "work",
+        duration: isReps ? config.repInterval : config.punchInterval,
+        name: intervalName,
+      };
+    } else {
+      return {
+        kind: "recovery",
+        duration: config.recoveryInterval,
+        name: config.recoverySequence
+          ? config.recoverySequence[
+              ((i - 1) / 2) % config.recoverySequence.length
+            ]
+          : undefined,
+      };
+    }
+  });
 
   const incActiveInterval = React.useCallback(() => {
     setActiveInterval((s) => s + 1);
@@ -163,7 +171,10 @@ export function MultiTimer(props: {
 
   React.useEffect(() => {
     if (props.onIntervalChange)
-      props.onIntervalChange(intervals[activeInterval]);
+      props.onIntervalChange({
+        ...intervals[activeInterval],
+        nextName: intervals[activeInterval + 1]?.name,
+      });
   }, [activeInterval]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleComplete() {

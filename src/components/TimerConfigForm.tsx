@@ -7,6 +7,8 @@ import styles from "./TimerConfigForm.module.css";
 export function TimerConfigForm(props: {
   value: TimerConfig;
   onChange(value: TimerConfig): void;
+  enableReps?: boolean;
+  intervalRatio?: number;
 }): JSX.Element {
   function handleChange(name: string) {
     return function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -19,7 +21,14 @@ export function TimerConfigForm(props: {
 
   function getTotalDuration(): string {
     const totalSeconds =
-      props.value.workInterval * props.value.numberOfSets +
+      (props.enableReps && props.intervalRatio
+        ? props.intervalRatio *
+            props.value.punchInterval *
+            props.value.numberOfSets +
+          (1 / props.intervalRatio) *
+            props.value.repInterval *
+            props.value.numberOfSets
+        : props.value.punchInterval * props.value.numberOfSets) +
       props.value.recoveryInterval * (props.value.numberOfSets - 1);
     const totalMinutes = (totalSeconds / 60).toString();
     const [minuteStr, secondStr] = totalMinutes.split(".");
@@ -33,14 +42,25 @@ export function TimerConfigForm(props: {
   return (
     <div className={styles.container}>
       <div className={styles.field}>
-        <label htmlFor="workInterval">Work Interval (seconds)</label>
+        <label htmlFor="punchInterval">Punching Work Interval (seconds)</label>
         <input
           type="number"
-          name="workInterval"
-          onChange={handleChange("workInterval")}
-          value={props.value.workInterval}
+          name="punchInterval"
+          onChange={handleChange("punchInterval")}
+          value={props.value.punchInterval}
         />
       </div>
+      {props.enableReps && (
+        <div className={styles.field}>
+          <label htmlFor="repInterval">Reps Work Interval (seconds)</label>
+          <input
+            type="number"
+            name="repInterval"
+            onChange={handleChange("repInterval")}
+            value={props.value.repInterval}
+          />
+        </div>
+      )}
       <div className={styles.field}>
         <label htmlFor="recoveryInterval">Recovery Interval (seconds)</label>
         <input

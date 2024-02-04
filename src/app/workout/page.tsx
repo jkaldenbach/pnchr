@@ -25,11 +25,13 @@ export default function WorkoutPage(): JSX.Element {
     combos: true,
     situps: true,
     pushups: true,
+    squats: true,
     activeRecovery: false,
   });
   const [timerConfig, setTimerConfig] = React.useState<TimerConfig>({
-    workInterval: 10,
-    recoveryInterval: 10,
+    punchInterval: 90,
+    repInterval: 30,
+    recoveryInterval: 5,
     numberOfSets: 15,
     countDown: 3,
   });
@@ -51,6 +53,15 @@ export default function WorkoutPage(): JSX.Element {
     setDisplayState("config-timer");
   }
 
+  const punchTypeCount = (["padWork", "combos"] as const).filter(
+    (field) => workoutConfig[field]
+  ).length;
+  const repTypeCount = (["situps", "pushups", "squats"] as const).filter(
+    (field) => workoutConfig[field]
+  ).length;
+  const enableReps = !!repTypeCount;
+  const intervalRatio = enableReps ? punchTypeCount / repTypeCount : undefined;
+
   return (
     <div className={commonStyles.container}>
       <Header>Workout</Header>
@@ -60,6 +71,7 @@ export default function WorkoutPage(): JSX.Element {
           onSubmit={handleWorkoutConfigSubmit}
         >
           <h2 className={commonStyles.header}>Configure Activities</h2>
+          <h3>Punching</h3>
           <ContainedCheckbox
             label="Pad Work"
             name="padWork"
@@ -72,6 +84,7 @@ export default function WorkoutPage(): JSX.Element {
             checked={workoutConfig.combos}
             onChange={handleWorkoutConfigChange}
           />
+          <h3>Reps</h3>
           <ContainedCheckbox
             label="Sit Ups"
             name="situps"
@@ -84,12 +97,21 @@ export default function WorkoutPage(): JSX.Element {
             checked={workoutConfig.pushups}
             onChange={handleWorkoutConfigChange}
           />
-          <ToggleCheckbox
-            label="Active Recovery"
-            name="activeRecovery"
-            checked={workoutConfig.activeRecovery}
+          <ContainedCheckbox
+            label="Squats"
+            name="squats"
+            checked={workoutConfig.squats}
             onChange={handleWorkoutConfigChange}
           />
+          <div>
+            <h3>Recovery</h3>
+            <ToggleCheckbox
+              label="Active Recovery"
+              name="activeRecovery"
+              checked={workoutConfig.activeRecovery}
+              onChange={handleWorkoutConfigChange}
+            />
+          </div>
           <button className={commonStyles.cta} type="submit">
             Continue
           </button>
@@ -97,7 +119,12 @@ export default function WorkoutPage(): JSX.Element {
       )}
       {displayState === "config-timer" && (
         <form className={styles.configForm} onSubmit={handleTimerConfigSubmit}>
-          <TimerConfigForm value={timerConfig} onChange={setTimerConfig} />
+          <TimerConfigForm
+            value={timerConfig}
+            onChange={setTimerConfig}
+            enableReps={enableReps}
+            intervalRatio={intervalRatio}
+          />
           <button className={commonStyles.cta} type="submit">
             Start
           </button>
