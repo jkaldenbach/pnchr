@@ -15,7 +15,8 @@ export default function TimerPage(): JSX.Element {
   const [displayState, setDisplayState] =
     React.useState<DisplayState>("configuring");
   const [config, setConfig] = React.useState<TimerConfig>({
-    workInterval: 30,
+    punchInterval: 30,
+    repInterval: 0,
     recoveryInterval: 10,
     numberOfSets: 15,
     countDown: 3,
