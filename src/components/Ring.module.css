@@ -7,6 +7,10 @@
 }
 
 .content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
   --size: 9rem;
   font-size: 3rem;
   background-color: var(--color-foreground);
@@ -23,10 +27,11 @@
 .container svg {
   position: absolute;
   width: 100%;
-  top: 25%;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  margin: auto;
   transform: rotate(-90deg);
 }
 
