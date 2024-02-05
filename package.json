@@ -6,7 +6,8 @@
     "dev": "PORT=1337 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "serve": "serve docs"
   },
   "dependencies": {
     "classnames": "^2.3.2",
@@ -23,6 +24,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.2",
+    "serve": "^14.2.1",
     "typescript": "^5"
   }
 }
