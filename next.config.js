@@ -3,7 +3,6 @@ const nextConfig = {
   output: "export",
   distDir: "docs",
   basePath: "/pnchr",
-  assetPrefix: "/pnchr",
 };
 
 module.exports = nextConfig;
