@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "PORT=1337 next dev",
-    "build": "next build && touch docs/.nojekyll",
+    "build": "ENV=build next build && touch docs/.nojekyll",
     "start": "next start",
     "lint": "next lint",
     "serve": "serve docs"

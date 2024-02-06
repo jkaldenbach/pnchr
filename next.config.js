@@ -2,7 +2,7 @@
 const nextConfig = {
   output: "export",
   distDir: "docs",
-  basePath: "/pnchr",
+  basePath: process.env.ENV === "build" ? "/pnchr" : undefined,
 };
 
 module.exports = nextConfig;

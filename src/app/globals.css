@@ -179,6 +179,7 @@ button {
   border-radius: var(--button-border-radius);
   border: 0;
   background: var(--color-button-background);
+  color: var(--color-foreground);
   /* border: 1px solid var(--color-border); */
 }
 

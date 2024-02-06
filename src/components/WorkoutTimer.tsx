@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Interval, MultiTimer, TimerConfig } from "./Timer";
 import { getProgression, padWorkCallout, translateCombo } from "@/lib/workout";
+import { useSpeech } from "@/lib/speech";
 
 export type WorkoutConfig = {
   padWork: boolean;
@@ -32,6 +33,7 @@ function useWorkIntervals(workoutConfig: WorkoutConfig): {
   message?: string;
   setWorkoutInterval(interval: Interval): void;
 } {
+  const { speak } = useSpeech();
   const [activeWorkInterval, setActiveInterval] = React.useState(0);
   const [interval, setWorkoutInterval] = React.useState<Interval>();
   const [message, setMessage] = React.useState<string>();
@@ -98,13 +100,7 @@ function useWorkIntervals(workoutConfig: WorkoutConfig): {
   }, [interval]);
 
   React.useEffect(() => {
-    if (message) {
-      const utterance = new SpeechSynthesisUtterance(
-        message.replaceAll(" - ", " ")
-      );
-      utterance.rate = 0.95;
-      window.speechSynthesis.speak(utterance);
-    }
+    if (message) speak(message);
   }, [message]);
 
   return {
